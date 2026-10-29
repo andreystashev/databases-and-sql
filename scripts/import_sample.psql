@@ -1,0 +1,29 @@
+\set ON_ERROR_STOP on
+-- Run psql from the repository root. The CSV path is client-side.
+-- Preserve the original field spellings and lexical values, including PIN zeros.
+BEGIN;
+CREATE SCHEMA raw_import;
+CREATE TABLE raw_import.sample (
+    staf_name text,
+    staff_age text,
+    staff_id text,
+    staff_lang text,
+    order_pk text,
+    order_address text,
+    order_country text,
+    order_company text,
+    order_price text,
+    order_dt text,
+    order_list text,
+    cli_name text,
+    cli_email text,
+    cli_phone text,
+    cli_secret text,
+    c_token text,
+    c_pin text,
+    c_gen text,
+    c_type text
+);
+\copy raw_import.sample FROM 'data/sample_2.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')
+COMMIT;
+SELECT count(*) AS imported_rows FROM raw_import.sample;
